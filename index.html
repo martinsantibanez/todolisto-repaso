@@ -2,7 +2,7 @@
     <head>
         <title>Todo Listo!</title>
 
-        <!-- Es necesario hacer bower install jquery bootstrap -->
+        <!-- Es necesario hacer npm install -->
         <script src="node_modules/jquery/dist/jquery.min.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -21,9 +21,9 @@
                 console.log("Iniciando llamada Ajax");
                 $.get('http://localhost:8000/tareas', function(data, textStatus, jqXHR) {
                 /** Caso exitoso
-                El mÃ©todo .get solo permite manejar el caso exitoso.
+                El método .get solo permite manejar el caso exitoso.
                 Para manejar errores hay que usar $.ajax
-                Ver documentaciÃ³n... http://api.jquery.com/jquery.ajax/ **/                
+                Ver documentación... http://api.jquery.com/jquery.ajax/ **/                
     
                     console.log("Ajax exitoso!");
                     console.log(data);
@@ -64,7 +64,7 @@
 
         <nav class="navbar navbar-dark bg-dark mt-5 fixed-bottom">
             <div class="navbar-expand m-auto navbar-text">
-                Hecho con <i class="fa fa-heart" style="color: pink;"></i> para IngenierÃ­a Web Avanzada
+                Hecho con <i class="fa fa-heart" style="color: pink;"></i> para Ingeniería Web Avanzada
             </div>
         </nav>
 
