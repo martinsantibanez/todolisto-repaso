@@ -1,0 +1,16 @@
+{
+  "name": "todolisto-repaso",
+  "version": "1.0.0",
+  "description": "Taller 0 Ingeniería Web Avanzada",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1"
+  }
+}
