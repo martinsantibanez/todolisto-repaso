@@ -5,36 +5,10 @@
         <!-- Es necesario hacer npm install -->
         <script src="node_modules/jquery/dist/jquery.min.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="script.js"></script>
         <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css" />
-
-        <script>
-            // Usando jQuery
-            $().ready(function() {
-                alert("Documento listo!");
-                console.log("Listo!");
-
-                // Actualizamos el texto del elemento con id 'frase'
-                $('#frase').text("Hola!");
-
-                // Haciendo llamada Ajax al backend
-                console.log("Iniciando llamada Ajax");
-                $.get('http://localhost:8000/tareas', function(data, textStatus, jqXHR) {
-                /** Caso exitoso
-                El método .get solo permite manejar el caso exitoso.
-                Para manejar errores hay que usar $.ajax
-                Ver documentación... http://api.jquery.com/jquery.ajax/ **/                
-    
-                    console.log("Ajax exitoso!");
-                    console.log(data);
-
-                }).fail(function(x) {
-                    console.log("Error en la llamada Ajax :(");
-                    console.log(x);
-                });
-            });
-        </script>
-        
+        <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
         
@@ -44,10 +18,10 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-4-md">
+                <div class="col-md-4">
                     AQUI VA EL FORMULARIO
                 </div>
-                <div class="col-8-md">
+                <div class="col-md-4">
                     AQUI VA LA TABLA
                 </div>
             </div>            
@@ -64,7 +38,7 @@
 
         <nav class="navbar navbar-dark bg-dark mt-5 fixed-bottom">
             <div class="navbar-expand m-auto navbar-text">
-                Hecho con <i class="fa fa-heart" style="color: pink;"></i> para Ingeniería Web Avanzada
+                Hecho con <i class="fa fa-heart" style="color: pink;"></i> para Ingenierï¿½a Web Avanzada
             </div>
         </nav>
 
