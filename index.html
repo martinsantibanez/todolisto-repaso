@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Todo Listo!</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
         <!-- Es necesario hacer npm install -->
         <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -22,7 +23,17 @@
                     AQUI VA EL FORMULARIO
                 </div>
                 <div class="col-md-4">
-                    AQUI VA LA TABLA
+                    <table class="table" id="tareas">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Estado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>            
 
@@ -38,7 +49,7 @@
 
         <nav class="navbar navbar-dark bg-dark mt-5 fixed-bottom">
             <div class="navbar-expand m-auto navbar-text">
-                Hecho con <i class="fa fa-heart" style="color: pink;"></i> para Ingenier�a Web Avanzada
+                Hecho con <i class="fa fa-heart" style="color: pink;"></i> para Ingeniería Web Avanzada
             </div>
         </nav>
 
