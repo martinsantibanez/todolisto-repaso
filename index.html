@@ -14,15 +14,15 @@
     <body>
         
         <nav class="navbar navbar-dark bg-dark mb-5">
-            <a class="navbar-brand" href="/">Todo Listo!</a>
+            <a class="navbar-brand" href="/">Casi Todo Listo!</a>
         </nav>
 
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 offset-md-1">
                     AQUI VA EL FORMULARIO
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <table class="table" id="tareas">
                         <thead class="thead-dark">
                           <tr>
@@ -40,9 +40,10 @@
             <hr/>
 
             <div class="row">
-                <div class="col-md-12">
-                    AQUI VA EL DETALLE DE LA TABLA
-                    <span id="frase"></span>
+                <div class="col-md-10 offset-md-1" id="detalleTarea" style="display: none;">
+                    <h2 class="titulo"></h2>
+                    <p class="descripcion"></p>
+                    <button class="btn btn-success"></button>
                 </div>
             </div>
         </div>
