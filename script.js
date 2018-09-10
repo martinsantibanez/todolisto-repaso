@@ -1,5 +1,5 @@
 // Usando jQuery
-$().ready(function() {
+$(document).ready(function() {
     const APIURL = 'http://localhost:8000';
 
     // Es mejor hacer esto solo una vez, cada $ cuesta tiempo.
@@ -30,7 +30,7 @@ $().ready(function() {
         });
     }
 
-    // https://stackoverflow.com/questions/1359018/in-jquery-how-to-attach-events-to-dynamic-html-elements
+    //  
     tBody.on('click', 'a', function(e){
         clearActive();
         $(this).parents("tr").addClass("table-secondary");
@@ -61,4 +61,42 @@ $().ready(function() {
         console.log(x);
     }
 
+    /** Formulario muestra si faltan caracteres al ingresar datos tanto en titulo como en descripcion */
+
+    $("#titulo_error_mensaje").hide();
+    $("#descripcion_error_mensaje").hide();
+    var error_titulo = false;
+    var error_descripcion = false;
+	$("#titulo").change(function () {   
+        check_titulo();  
+	}); 
+    $("#descripcion").focusout(function () {   
+        check_descripcion();  
+	}); 
+    function check_titulo(){
+        var largo_titulo= $("#titulo").val().length; 
+        if(largo_titulo<5){
+            $("#titulo_error_mensaje").html("El título debe tener largo mayor a 5 caracteres");
+            $("#titulo_error_mensaje").show();
+            var error_titulo = true;
+        }
+        else{
+            $("#titulo_error_mensaje").hide(); 
+            error_titulo=false;
+     }
+    }
+ 
+    function check_descripcion(){
+        var largo_descripcion= $("#descripcion").val().length; 
+        if(largo_descripcion<10){
+            $("#descripcion_error_mensaje").html("La descripción debe tener largo mayor a 10 caracteres");
+            $("#descripcion_error_mensaje").show();
+            error_descripcion = true;
+        }
+        else{
+            $("#descripcion_error_mensaje").hide(); 
+            error_descripcion=false;
+     }
+    }
+   
 });
