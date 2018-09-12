@@ -24,14 +24,14 @@
                     
                     <!--Aqui va el formulario-->
 
-                    <form id="registro_form"  method="POST">
+                    <form  id= "registro_form" action="http://localhost:8000/tareas/"  method="POST">
                         <div class="form-group">
                           <label for="titulo">Titulo</label>
-                          <input type="text" class="form-text" id="titulo" ><span class="error_form" id="titulo_error_mensaje"></span>
+                          <input type="text" class="form-text" id="titulo" name="titulo" ><span class="error_form" id="titulo_error_mensaje"></span>
                         </div>
                         <div class="form-group">
                           <label for="descripcion">Descripción</label>
-                          <input type="descripcion" class="form-control" id="descripcion"><span class="error_form" id="descripcion_error_mensaje"></span>
+                          <input type="descripcion" class="form-control" id="descripcion" name="descripcion"><span class="error_form" id="descripcion_error_mensaje"></span>
                         </div>
                         <button type="submit" class="btn btn-default" id="boton">Crear tarea</button>
                       </form>

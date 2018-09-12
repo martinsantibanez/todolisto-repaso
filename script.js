@@ -43,6 +43,7 @@ $(document).ready(function() {
             detalleTarea.boton.text('Pasar a estado '+data.nombre_estado + '+1'); //TODO
         }).fail(handleError);
     });
+    
 
     /** Reutilizable al agregar tareas */
     function appendTarea(tarea) { 
@@ -65,24 +66,26 @@ $(document).ready(function() {
 
     $("#titulo_error_mensaje").hide();
     $("#descripcion_error_mensaje").hide();
+    $("#error_ingreso").hide();
     var error_titulo = false;
     var error_descripcion = false;
 	$("#titulo").change(function () {   
         check_titulo();  
 	}); 
-    $("#descripcion").focusout(function () {   
+    $("#descripcion").change(function () {   
         check_descripcion();  
-	}); 
+    }); 
+    /**funciones check se reutilizan para verificar formulario */
     function check_titulo(){
         var largo_titulo= $("#titulo").val().length; 
         if(largo_titulo<5){
             $("#titulo_error_mensaje").html("El título debe tener largo mayor a 5 caracteres");
             $("#titulo_error_mensaje").show();
-            var error_titulo = true;
+            return false;
         }
         else{
             $("#titulo_error_mensaje").hide(); 
-            error_titulo=false;
+            return true;
      }
     }
  
@@ -91,12 +94,53 @@ $(document).ready(function() {
         if(largo_descripcion<10){
             $("#descripcion_error_mensaje").html("La descripción debe tener largo mayor a 10 caracteres");
             $("#descripcion_error_mensaje").show();
-            error_descripcion = true;
+            return false;
         }
         else{
             $("#descripcion_error_mensaje").hide(); 
-            error_descripcion=false;
-     }
+            return true;
+        }
+    };
+    
+
+/**Intento de envio de formulario con ajax */
+
+$('#registro_form').submit(function(event){
+        event.preventDefault();
+        var url= $(this).attr('action');
+        var method= $(this).attr('method');
+        var data={};
+    $(this).find('[name]').each(function(value){
+            var name= $(this).attr('name');
+            var value= $(this).val();
+            data[name]=value;
+            data["estado"]="0";
+    });
+    if (check_descripcion()==false || check_titulo()==false){
+        alert("Ingrese los campos solicitados correctamente.");
     }
-   
+    $.ajax({                        
+        type: "POST",                 
+        url: url,                    
+        data: data,
+        success: function(data)            
+        {
+            appendTarea(data);           
+        }
+      });
+    data.estado="0";
+
+    
+    console.log(data);
+
+    })
+    console.log(data);
+        return false;
+
+
 });
+
+
+
+
+
