@@ -17,11 +17,23 @@ $(document).ready(function() {
         console.log("Iniciando llamada Ajax");
         $.get( APIURL + '/tareas', function(data, textStatus, jqXHR) {
             data.forEach( function(element) {
-                console.log(element);
                 appendTarea(element);
             });
         }).fail(handleError);
     }
+    /** Buscador por titulo */
+$("#buscador").keyup(function(){
+    var input;
+    input=$("#buscador").val().toLowerCase();
+    $.each($("#tareas tbody tr"), function() {
+        if($(this).text().toLowerCase().indexOf(input) === -1)
+           $(this).hide();
+        else
+           $(this).show();       
+    });
+})
+
+
     
     /** Saca la clase correspondiente a la fila seleccionada, para poder seleccionar otra  */
     function clearActive(){
@@ -40,8 +52,9 @@ $(document).ready(function() {
             detalleTarea.root.show();
             detalleTarea.titulo.text(data.titulo);
             detalleTarea.descripcion.text(data.descripcion);
-            detalleTarea.boton.text('Pasar a estado '+data.nombre_estado + '+1'); //TODO
+            detalleTarea.boton.text('Pasar a estado '+data.nombre_estado); //TODO
         }).fail(handleError);
+        
     });
     
 
