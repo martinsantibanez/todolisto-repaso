@@ -64,27 +64,26 @@ $(document).ready(function() {
 
     /** Formulario muestra si faltan caracteres al ingresar datos tanto en titulo como en descripcion */
 
-    $("#titulo_error_mensaje").hide();
-    $("#descripcion_error_mensaje").hide();
-    $("#error_ingreso").hide();
+    $("#advertencia_titulo").hide();
+    $("#advertencia_descripcion").hide();
     var error_titulo = false;
     var error_descripcion = false;
-	$("#titulo").change(function () {   
+	$("#titulo").keydown(function () {   
         check_titulo();  
 	}); 
-    $("#descripcion").change(function () {   
+    $("#descripcion").keydown(function () {   
         check_descripcion();  
     }); 
     /**funciones check se reutilizan para verificar formulario */
     function check_titulo(){
         var largo_titulo= $("#titulo").val().length; 
         if(largo_titulo<5){
-            $("#titulo_error_mensaje").html("El título debe tener largo mayor a 5 caracteres");
-            $("#titulo_error_mensaje").show();
+            $("#advertencia_titulo").html("El título debe tener largo mayor a 5 caracteres");
+            $("#advertencia_titulo").show();
             return false;
         }
         else{
-            $("#titulo_error_mensaje").hide(); 
+            $("#advertencia_titulo").hide(); 
             return true;
      }
     }
@@ -92,12 +91,12 @@ $(document).ready(function() {
     function check_descripcion(){
         var largo_descripcion= $("#descripcion").val().length; 
         if(largo_descripcion<10){
-            $("#descripcion_error_mensaje").html("La descripción debe tener largo mayor a 10 caracteres");
-            $("#descripcion_error_mensaje").show();
+            $("#advertencia_descripcion").html("La descripción debe tener largo mayor a 10 caracteres");
+            $("#advertencia_descripcion").show();
             return false;
         }
         else{
-            $("#descripcion_error_mensaje").hide(); 
+            $("#advertencia_descripcion").hide(); 
             return true;
         }
     };
@@ -129,12 +128,7 @@ $('#registro_form').submit(function(event){
         }
       });
     data.estado="0";
-
-    
-    console.log(data);
-
     })
-    console.log(data);
         return false;
 
 
