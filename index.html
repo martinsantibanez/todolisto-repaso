@@ -21,8 +21,8 @@
         <div class="container">
             <div class="row">
                 <!-- Aqui va el buscador-->
-                <div class="col-md-4 offset-md-1">
-                    <input type="text" id="buscador"  placeholder="Escriba el titulo deseado...">
+                <div class="col-md-6 offset-md-5">
+                    <input type="text" id="buscador" class="form-control" placeholder="Buscar...">
             
                 </div>
             </div>
@@ -31,17 +31,17 @@
                     
                     <!--Aqui va el formulario-->
 
-                    <form  id= "registro_form" action="http://localhost:8000/tareas/"  method="POST">
+                    <form  id= "registro_form" method="POST">
                         <div class="form-group">
                           <label for="titulo">Titulo</label>
-                          <input type="text" class="form-text" id="titulo" name="titulo" >
-                          <div id="advertencia_titulo" class="alert alert-success" role="alert">
+                          <input type="text" class="form-control" id="titulo" name="titulo" >
+                          <div id="advertencia_titulo" class="invalid-feedback" role="alert">
                           <span class="error_form"></span></div>                          
                         </div>
                         <div class="form-group">
                           <label for="descripcion">Descripción</label>
                           <input type="descripcion" class="form-control" id="descripcion" name="descripcion">
-                          <div id="advertencia_descripcion" class="alert alert-success" role="alert"></div>
+                          <div id="advertencia_descripcion" class="invalid-feedback" role="alert"></div>
                           <span class="error_form"></span>
                         </div>
                         <button type="submit" class="btn btn-default" id="boton">Crear tarea</button>
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <nav class="navbar navbar-dark bg-dark mt-5 fixed-bottom">
+        <nav class="navbar navbar-dark bg-dark mt-5">
             <div class="navbar-expand m-auto navbar-text">
                 Hecho con <i class="fa fa-heart" style="color: pink;"></i> para Ingeniería Web Avanzada
             </div>
