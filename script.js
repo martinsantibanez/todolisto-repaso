@@ -10,11 +10,24 @@ $(document).ready(function() {
         root: $('#detalleTarea'),
         titulo: $('#detalleTarea .titulo'),
         descripcion: $('#detalleTarea .descripcion'),
-        boton: $('#detalleTarea .btn')
+        btnEstado: $('#detalleTarea .btnEstado'),
+        btnEditar: $('#detalleTarea .btnEditar'),
+        formEditar: $('#detalleTarea .formEditar'),
+        btnCerrar: $('#detalleTarea .formEditar btnCerrar'),
+        btnAceptar: $('#detalleTarea .formEditar btnAceptar')
     };
-    var trActual = {};
+    const textoEditando = $('#editando');
+    const cancelarEditar = $('#cancelarEditar');
+    const btnSubmit = $('#btnSubmit');
+    const advertencia_titulo = $('#advertencia_titulo');
+    const advertencia_descripcion = $('#advertencia_descripcion');
+    const titulo = $('#titulo');
+    const descripcion = $('#descripcion');
+    var tareaActual = {};
+    var trActual = {}; // Guarda el <tr> asociado a la tarea seleccionada
+    var editando = false;
 
-    // Carga inicial
+    /** 2. Carga inicial */
     cargarTareas();
     function cargarTareas() {
         tBody.html("");
@@ -24,7 +37,69 @@ $(document).ready(function() {
             });
         }).fail(handleError);
     }
-    /** Buscador por titulo */
+
+    /** 3. Mostrar detalle y cambiar estado */
+    tBody.on('click', 'a', function(e){
+        e.preventDefault();
+        setEditando(false);
+        trActual = $(this).parents('tr');
+        clearActive();
+        trActual.addClass('table-secondary');
+        var id = $(this).attr('data-id');
+        $.get( APIURL + '/tareas/' + id, function(data, textStatus, jqXHR) {
+            tareaActual = data;
+            renderActual();
+        }).fail(handleError);  
+    });
+
+    detalleTarea.btnEstado.click(function(e){
+        tareaActual.estado++;
+        editarTarea(tareaActual);
+    });
+
+    /** 4. Formulario muestra si faltan caracteres al ingresar datos tanto en titulo como en descripcion */
+    titulo.keydown(function () {  
+        check_titulo();  
+    }); 
+    descripcion.keydown(function () {   
+        check_descripcion();  
+    });
+
+    /** 5. Crear nueva tarea (o editar) */
+    $('#registro_form').submit(function(event){
+        event.preventDefault();
+        var data = {};
+        $(this).find('[name]').each(function(value){
+            var name = $(this).attr('name');
+            var value =  $(this).val();
+            data[name] = value;
+        });
+        if (check_descripcion() || check_titulo()){
+            alert("Ingrese los campos solicitados correctamente.");
+            return;
+        }
+        if( editando ) {
+            data['id'] = tareaActual.id;
+            data['estado'] = tareaActual.estado;
+            editarTarea(data);
+            setEditando(false);
+        } else { 
+            data['estado'] = 0;
+            var url = APIURL + '/tareas/';
+            var method = 'POST';
+            $.ajax({                        
+                method: method,                 
+                url: url,                    
+                data: data,
+                success: function(data)            
+                {
+                    appendTarea(data);        
+                }
+            });
+        }
+    });
+
+    /** 6. Buscador por titulo */
     $('#buscador').keyup(function(){
         var input;
         input=$('#buscador').val().toLowerCase();
@@ -35,26 +110,32 @@ $(document).ready(function() {
                 $(this).show();       
         });
     });
+
+    /** 7. Editar */
+    detalleTarea.btnEditar.click(function(e){
+        setEditando(true);
+    });
+    cancelarEditar.click(function(e){
+        e.preventDefault();
+        setEditando(false);
+    });
     
-    /** Saca la clase correspondiente a la fila seleccionada, para poder seleccionar otra  */
-    function clearActive(){
-        tBody.children('.table-secondary').each(function(){
-            $(this).toggleClass('table-secondary');
+
+    /* Funciones */
+    function editarTarea(newData){
+        var url =  APIURL + '/tareas/' + newData.id + '/';
+        $.ajax({   
+            method: 'PUT', 
+            url: url,
+            data: newData,
+            success: function(data) {
+                tareaActual = data;
+                renderActual();
+                trActual.children('.estado').text(tareaActual.nombre_estado);
+                trActual.children('.tituloTarea').children('a').text(tareaActual.titulo);
+            }
         });
     }
-    //  
-    tBody.on('click', 'a', function(e){
-        e.preventDefault();
-        trActual = $(this).parents('tr');
-        clearActive();
-        trActual.addClass('table-secondary');
-        var id = $(this).attr('data-id');
-        $.get( APIURL + '/tareas/' + id, function(data, textStatus, jqXHR) {
-            tareaActual = data;
-            renderActual();
-        }).fail(handleError);
-        
-    });
 
     function renderActual(){
         console.log(tareaActual);
@@ -62,64 +143,57 @@ $(document).ready(function() {
         detalleTarea.titulo.text(tareaActual.titulo);
         detalleTarea.descripcion.text(tareaActual.descripcion);
         if (tareaActual.estado < 2){
-            detalleTarea.boton.show();
-            detalleTarea.boton.text('Pasar a estado ' + estados[tareaActual.estado+1]);
+            detalleTarea.btnEstado.show();
+            detalleTarea.btnEstado.text('Pasar a estado ' + estados[tareaActual.estado+1]);
         } else {
-            detalleTarea.boton.hide();
+            detalleTarea.btnEstado.hide();
         }
     }
-
-    detalleTarea.boton.click(function(e){
-        tareaActual.estado++;
-        var url =  APIURL + '/tareas/' + tareaActual.id + '/';
-        $.ajax({   
-            method: 'PUT', 
-            url: url,
-            data: tareaActual,
-            success: function(data) {
-                tareaActual = data;
-                renderActual();
-                trActual.children('.estado').text(tareaActual.nombre_estado);
-                // $('th:contains('+tareaActual.id+')').siblings('.estado').text(tareaActual.nombre_estado);
-            }
-        });
-    });
     
-    /** Reutilizable al agregar tareas */
+    function setEditando(value){
+        editando = value;
+        if(editando) {
+            titulo.val(tareaActual.titulo);
+            descripcion.val(tareaActual.descripcion);
+            textoEditando.text('Editando '+tareaActual.id).show();
+            // textoEditando.show();
+            cancelarEditar.show();
+            btnSubmit.text('Editar tarea');
+            location.href='#editando';
+        } else {
+            titulo.val('');
+            descripcion.val('');
+            cancelarEditar.hide();
+            textoEditando.hide();
+            btnSubmit.text('Crear tarea');
+            location.href='#';
+        }
+    }
+    function clearActive(){
+        tBody.children('.table-secondary').each(function(){
+            $(this).toggleClass('table-secondary');
+        });
+    }
+
+    /** Agrega una tarea a la tabla */
     function appendTarea(tarea) { 
         var tRow = '';
         tRow += '<tr>';
         tRow += '<th scope="row">' + tarea.id + '</th>';
-        tRow += '<td><a href="#" data-id="' + tarea.id + '">' + tarea.titulo + '</a></td>';
+        tRow += '<td class="tituloTarea"><a href="#" data-id="' + tarea.id + '">' + tarea.titulo + '</a></td>';
         tRow += '<td class="estado">' + tarea.nombre_estado + '</td>';
         tRow += '</tr>';
         tBody.append( $( tRow ) );
     }
 
-    /** Se usa varias veces */
     function handleError(x) {
         console.log("Error en la llamada Ajax :(");
         console.log(x);
     }
 
-    /** Formulario muestra si faltan caracteres al ingresar datos tanto en titulo como en descripcion */ 
-    const advertencia_titulo = $('#advertencia_titulo');
-    const advertencia_descripcion = $('#advertencia_descripcion');
-    const titulo = $('#titulo');
-    const descripcion = $('#descripcion');
-
-    /* Ocultar advertencias y monitorear keys */
-    advertencia_titulo.hide();
-    advertencia_descripcion.hide();
-	titulo.keydown(function () {   
-        check_titulo();  
-	}); 
-    descripcion.keydown(function () {   
-        check_descripcion();  
-    }); 
     /**funciones check se reutilizan para verificar formulario */
     function check_titulo(){
-        var largo_titulo= titulo.val().length; 
+        var largo_titulo = titulo.val().length; 
         if(largo_titulo<5){
             advertencia_titulo.html("El título debe tener largo mayor a 5 caracteres");
             advertencia_titulo.show();
@@ -146,31 +220,6 @@ $(document).ready(function() {
         }
     };
     
-    /**Intento de envio de formulario con ajax */
-    $('#registro_form').submit(function(event){
-        event.preventDefault();
-        var url = APIURL + '/tareas/';
-        var data = {};
-        $(this).find('[name]').each(function(value){
-            var name = $(this).attr('name');
-            var value =  $(this).val();
-            data[name] = value;
-            data['estado'] = 0;
-        });
-        if (check_descripcion() || check_titulo()){
-            alert("Ingrese los campos solicitados correctamente.");
-            return;
-        }
-        $.ajax({                        
-            method: 'POST',                 
-            url: url,                    
-            data: data,
-            success: function(data)            
-            {
-                appendTarea(data);        
-            }
-        });
-    });
 });
 
 

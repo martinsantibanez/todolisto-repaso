@@ -20,7 +20,6 @@
 
         <div class="container">
             <div class="row">
-                <!-- Aqui va el buscador-->
                 <div class="col-md-6 offset-md-5">
                     <input type="text" id="buscador" class="form-control" placeholder="Buscar...">
             
@@ -28,28 +27,27 @@
             </div>
             <div class="row">
                 <div class="col-md-4 offset-md-1">
-                    
-                    <!--Aqui va el formulario-->
-
+                    <h2 id="editando" style="display:none;">Editando </h2>
                     <form  id= "registro_form" method="POST">
                         <div class="form-group">
                           <label for="titulo">Titulo</label>
                           <input type="text" class="form-control" id="titulo" name="titulo" >
-                          <div id="advertencia_titulo" class="invalid-feedback" role="alert">
+                          <div id="advertencia_titulo" class="invalid-feedback" role="alert" style="display: none;">
                           <span class="error_form"></span></div>                          
                         </div>
                         <div class="form-group">
                           <label for="descripcion">Descripción</label>
                           <input type="descripcion" class="form-control" id="descripcion" name="descripcion">
-                          <div id="advertencia_descripcion" class="invalid-feedback" role="alert"></div>
+                          <div id="advertencia_descripcion" class="invalid-feedback" role="alert" style="display: none;"></div>
                           <span class="error_form"></span>
                         </div>
-                        <button type="submit" class="btn btn-default" id="boton">Crear tarea</button>
+                        <button type="submit" class="btn btn-default" id="btnSubmit">Crear tarea</button>
+                        <button class="btn btn-danger" id="cancelarEditar" style="display:none;">Cancelar</button>
                       </form>
 
                 </div>
                 <div class="col-md-6">
-                    <h1>Todo Listo!</h1>
+                    <h1>Casi Todo Listo!</h1>
                     <table class="table" id="tareas">
                         <thead class="thead-dark">
                           <tr>
@@ -70,7 +68,8 @@
                 <div class="col-md-10 offset-md-1" id="detalleTarea" style="display: none;">
                     <h2 class="titulo"></h2>
                     <p class="descripcion"></p>
-                    <button class="btn btn-success"></button>
+                    <button class="btn btn-success btnEstado"></button>
+                    <button class="btn btn-secondary btnEditar">Editar</button>
                 </div>
             </div>
         </div>
